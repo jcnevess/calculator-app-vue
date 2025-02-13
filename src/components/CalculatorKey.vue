@@ -21,28 +21,28 @@ const emit = defineEmits(['keyPressed'])
 
 <style scoped>
 .key {
-  background-color: var(--color-bg-grayish-orange);
+  background-color: var(--color-bg-key);
   border: none;
   border-radius: 5px;
   padding: 0.375rem 1.25rem;
-  box-shadow: 0 2px var(--color-bg-shadow-grayish-orange);
-  color: var(--color-darkest-blue);
+  box-shadow: 0 2px var(--color-bg-shadow-key);
+  color: var(--color-text-key);
 }
 
 .key:active {
-  background-color: var(--color-bg-shadow-grayish-orange);
+  background-color: var(--color-bg-shadow-key);
 }
 
 .commandKey {
-  background-color: var(--color-bg-dark-blue);
-  box-shadow: 0 2px var(--color-bg-shadow-dark-blue);
-  color: var(--color-white);
+  background-color: var(--color-bg-command-key);
+  box-shadow: 0 2px var(--color-bg-shadow-command-key);
+  color: var(--color-text-white);
   text-transform: uppercase;
   font-size: 0.75rem;
 }
 
 .commandKey:active {
-  background-color: var(--color-bg-shadow-dark-blue);
+  background-color: var(--color-bg-shadow-command-key);
 }
 
 .commandKey .text {
@@ -54,14 +54,14 @@ const emit = defineEmits(['keyPressed'])
 }
 
 .equalKey {
-  background-color: var(--color-bg-red);
-  box-shadow: 0 2px var(--color-bg-shadow-red);
-  color: var(--color-white);
+  background-color: var(--color-bg-equal-key);
+  box-shadow: 0 2px var(--color-bg-shadow-equal-key);
   grid-column: 3 / 5;
+  color: var(--color-text-equal);
 }
 
 .equalKey:active {
-  background-color: var(--color-bg-shadow-red);
+  background-color: var(--color-bg-shadow-equal-key);
 }
 
 .text {

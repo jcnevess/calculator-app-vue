@@ -9,7 +9,7 @@ const props = defineProps(['screenDisplay'])
 <style scoped>
 .screen {
   background-color: var(--color-bg-screen);
-  color: var(--color-white);
+  color: var(--color-text-primary);
   font-weight: bold;
   padding: 1rem;
   border-radius: 5px;
