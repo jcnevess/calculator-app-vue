@@ -17,5 +17,8 @@ const props = defineProps(['screenDisplay'])
   align-items: center;
   justify-content: flex-end;
   text-transform: uppercase;
+  overflow-y: scroll;
+  word-break: break-all;
+  text-align: end;
 }
 </style>

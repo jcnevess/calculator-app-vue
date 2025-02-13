@@ -59,7 +59,9 @@ function updateScreen(newEntry) {
     //
   } else if (operatorKeys.indexOf(newEntry) > -1) {
     if (firstTerm.value !== undefined && operator.value !== undefined) {
-      screenDisplay.value = performOperation(firstTerm.value, operator.value, screenDisplay.value)
+      screenDisplay.value = String(
+        performOperation(firstTerm.value, operator.value, screenDisplay.value),
+      )
     }
     hasDecimalPoint.value = false
     operator.value = newEntry
