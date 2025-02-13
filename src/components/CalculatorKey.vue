@@ -64,6 +64,10 @@ const emit = defineEmits(['keyPressed'])
   background-color: var(--color-bg-shadow-equal-key);
 }
 
+.highlighted {
+  background-color: var(--color-bg-shadow-key);
+}
+
 .text {
   font-size: 1.25rem;
   font-family: 'League Spartan', sans-serif;

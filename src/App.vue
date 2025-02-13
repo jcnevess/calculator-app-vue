@@ -5,6 +5,7 @@ import { ref } from 'vue'
 
 const themeNumber = ref('1')
 const screenDisplay = ref('0')
+const resetScreenOnNextEntry = ref(false)
 const hasDecimalPoint = ref(false)
 const firstTerm = ref('0')
 const operator = ref()
@@ -40,12 +41,17 @@ function updateScreen(newEntry) {
     } else {
       screenDisplay.value = screenDisplay.value + newEntry
     }
+
+    //
   } else if (operatorKeys.indexOf(newEntry) > -1) {
     hasDecimalPoint.value = false
     operator.value = newEntry
     //save First Term
     firstTerm.value = screenDisplay.value
     screenDisplay.value = '0'
+    //resetScreenOnNextEntry.value = true
+
+    //
   } else if (newEntry === '=') {
     hasDecimalPoint.value = false
     if (firstTerm.value !== '0' && operator.value != undefined) {
@@ -55,11 +61,15 @@ function updateScreen(newEntry) {
     }
     firstTerm.value = '0'
     operator.value = undefined
+
+    //
   } else if (newEntry === '.') {
     if (hasDecimalPoint.value === false) {
       hasDecimalPoint.value = true
       screenDisplay.value = screenDisplay.value + newEntry
     }
+
+    //
   } else if (newEntry === 'del') {
     if (screenDisplay.value.length > 1) {
       if (screenDisplay.value.slice(-1) === '.') {
@@ -69,6 +79,8 @@ function updateScreen(newEntry) {
     } else {
       screenDisplay.value = '0'
     }
+
+    //
   } else if (newEntry === 'reset') {
     screenDisplay.value = '0'
     hasDecimalPoint.value = false
@@ -94,7 +106,7 @@ function performOperation(term1, operator, term2) {
 </script>
 
 <template>
-  <div class="app" :class="'theme-' + themeNumber">
+  <div class="app" :class="`theme-${themeNumber}`">
     <!--header-->
     <div class="header">
       <h1>calc</h1>
@@ -134,6 +146,7 @@ function performOperation(term1, operator, term2) {
       <CalculatorKey
         v-for="label in buttonLabels"
         :key="label"
+        :class="{ highlighted: label === operator }"
         :label
         @key-pressed="updateScreen"
       ></CalculatorKey>
