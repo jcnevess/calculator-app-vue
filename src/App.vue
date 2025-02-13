@@ -7,7 +7,7 @@ const themeNumber = ref('1')
 const screenDisplay = ref('0')
 const resetScreen = ref(false)
 const hasDecimalPoint = ref(false)
-const firstTerm = ref('0')
+const firstTerm = ref()
 const operator = ref()
 
 const buttonLabels = [
@@ -45,29 +45,32 @@ function updateScreen(newEntry) {
 
     //
   } else if (operatorKeys.indexOf(newEntry) > -1) {
+    if (firstTerm.value !== undefined && operator.value !== undefined) {
+      screenDisplay.value = performOperation(firstTerm.value, operator.value, screenDisplay.value)
+    }
     hasDecimalPoint.value = false
     operator.value = newEntry
-    //save First Term
     firstTerm.value = screenDisplay.value
     resetScreen.value = true
 
     //
   } else if (newEntry === '=') {
     hasDecimalPoint.value = false
-    if (firstTerm.value !== '0' && operator.value != undefined) {
+    if (firstTerm.value !== undefined && operator.value !== undefined) {
       screenDisplay.value = String(
         performOperation(firstTerm.value, operator.value, screenDisplay.value),
       )
     }
-    firstTerm.value = '0'
+    firstTerm.value = undefined
     operator.value = undefined
     resetScreen.value = true
 
     //
   } else if (newEntry === '.') {
     if (hasDecimalPoint.value === false) {
+      screenDisplay.value = resetScreen.value ? '0' + newEntry : screenDisplay.value + newEntry
+      resetScreen.value = false
       hasDecimalPoint.value = true
-      screenDisplay.value = screenDisplay.value + newEntry
     }
 
     //
@@ -85,7 +88,7 @@ function updateScreen(newEntry) {
   } else if (newEntry === 'reset') {
     screenDisplay.value = '0'
     hasDecimalPoint.value = false
-    firstTerm.value = '0'
+    firstTerm.value = undefined
     operator.value = undefined
     resetScreen.value = false
   }
