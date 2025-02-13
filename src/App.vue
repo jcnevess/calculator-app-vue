@@ -1,7 +1,7 @@
 <script setup>
 import CalculatorScreen from './components/CalculatorScreen.vue'
 import CalculatorKey from './components/CalculatorKey.vue'
-import { ref } from 'vue'
+import { onErrorCaptured, ref } from 'vue'
 
 const themeNumber = ref('1')
 const screenDisplay = ref('0')
@@ -9,6 +9,7 @@ const resetScreen = ref(false)
 const hasDecimalPoint = ref(false)
 const firstTerm = ref()
 const operator = ref()
+const errorState = ref(false)
 
 const buttonLabels = [
   '7',
@@ -34,7 +35,19 @@ const buttonLabels = [
 const numericKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 const operatorKeys = ['+', '-', 'x', '/']
 
+onErrorCaptured(() => {
+  errorState.value = true
+  screenDisplay.value = 'error'
+  hasDecimalPoint.value = false
+  firstTerm.value = undefined
+  operator.value = undefined
+  resetScreen.value = true
+  return false
+})
+
 function updateScreen(newEntry) {
+  errorState.value = false
+
   if (numericKeys.indexOf(newEntry) > -1) {
     if (screenDisplay.value === '0' || resetScreen.value) {
       screenDisplay.value = newEntry
@@ -75,13 +88,13 @@ function updateScreen(newEntry) {
 
     //
   } else if (newEntry === 'del') {
-    if (screenDisplay.value.length > 1) {
+    if (screenDisplay.value === 'error' || screenDisplay.value.length <= 1) {
+      screenDisplay.value = '0'
+    } else {
       if (screenDisplay.value.slice(-1) === '.') {
         hasDecimalPoint.value = false
       }
       screenDisplay.value = screenDisplay.value.slice(0, -1)
-    } else {
-      screenDisplay.value = '0'
     }
 
     //
@@ -97,16 +110,27 @@ function updateScreen(newEntry) {
 function performOperation(term1, operator, term2) {
   const nterm1 = Number(term1)
   const nterm2 = Number(term2)
+
+  let result
   switch (operator) {
     case '+':
-      return nterm1 + nterm2
+      result = nterm1 + nterm2
+      break
     case '-':
-      return nterm1 - nterm2
+      result = nterm1 - nterm2
+      break
     case 'x':
-      return nterm1 * nterm2
+      result = nterm1 * nterm2
+      break
     case '/':
-      return nterm1 / nterm2
+      result = nterm1 / nterm2
   }
+
+  if (!isFinite(result)) {
+    throw new Error('math')
+  }
+
+  return result
 }
 </script>
 
@@ -152,6 +176,7 @@ function performOperation(term1, operator, term2) {
         v-for="label in buttonLabels"
         :key="label"
         :class="{ highlighted: label === operator }"
+        :disabled="errorState && (operatorKeys.indexOf(label) > -1 || label === '=')"
         :label
         @key-pressed="updateScreen"
       ></CalculatorKey>
@@ -169,6 +194,7 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 1rem;
+  width: 320px;
 }
 
 .header {
@@ -193,6 +219,10 @@ h1 {
 .toggler-actions-labels {
   display: flex;
   justify-content: space-around;
+}
+
+.toggler-actions-labels label {
+  cursor: pointer;
 }
 
 .toggler-actions-controls {

@@ -16,5 +16,6 @@ const props = defineProps(['screenDisplay'])
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  text-transform: uppercase;
 }
 </style>

@@ -27,10 +27,16 @@ const emit = defineEmits(['keyPressed'])
   padding: 0.375rem 1.25rem;
   box-shadow: 0 2px var(--color-bg-shadow-key);
   color: var(--color-text-key);
+  cursor: pointer;
 }
 
 .key:active {
   background-color: var(--color-bg-shadow-key);
+}
+
+.key:disabled {
+  background-color: var(--color-bg-shadow-key);
+  cursor: not-allowed;
 }
 
 .commandKey {
@@ -61,6 +67,10 @@ const emit = defineEmits(['keyPressed'])
 }
 
 .equalKey:active {
+  background-color: var(--color-bg-shadow-equal-key);
+}
+
+.equalKey:disabled {
   background-color: var(--color-bg-shadow-equal-key);
 }
 
