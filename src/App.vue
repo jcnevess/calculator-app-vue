@@ -5,7 +5,7 @@ import { ref } from 'vue'
 
 const themeNumber = ref('1')
 const screenDisplay = ref('0')
-const resetScreenOnNextEntry = ref(false)
+const resetScreen = ref(false)
 const hasDecimalPoint = ref(false)
 const firstTerm = ref('0')
 const operator = ref()
@@ -36,8 +36,9 @@ const operatorKeys = ['+', '-', 'x', '/']
 
 function updateScreen(newEntry) {
   if (numericKeys.indexOf(newEntry) > -1) {
-    if (screenDisplay.value === '0') {
+    if (screenDisplay.value === '0' || resetScreen.value) {
       screenDisplay.value = newEntry
+      resetScreen.value = false
     } else {
       screenDisplay.value = screenDisplay.value + newEntry
     }
@@ -48,8 +49,7 @@ function updateScreen(newEntry) {
     operator.value = newEntry
     //save First Term
     firstTerm.value = screenDisplay.value
-    screenDisplay.value = '0'
-    //resetScreenOnNextEntry.value = true
+    resetScreen.value = true
 
     //
   } else if (newEntry === '=') {
@@ -61,6 +61,7 @@ function updateScreen(newEntry) {
     }
     firstTerm.value = '0'
     operator.value = undefined
+    resetScreen.value = true
 
     //
   } else if (newEntry === '.') {
@@ -86,6 +87,7 @@ function updateScreen(newEntry) {
     hasDecimalPoint.value = false
     firstTerm.value = '0'
     operator.value = undefined
+    resetScreen.value = false
   }
 }
 
