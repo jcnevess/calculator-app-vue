@@ -14,11 +14,15 @@ const props = defineProps(['screenDisplay'])
   padding: 1rem;
   border-radius: 5px;
   display: flex;
-  align-items: center;
   justify-content: flex-end;
   text-transform: uppercase;
-  overflow-y: scroll;
   word-break: break-all;
   text-align: end;
+  height: 3ch;
+  line-height: 2ch;
+  scroll-behavior: smooth;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-text-primary) transparent;
 }
 </style>
